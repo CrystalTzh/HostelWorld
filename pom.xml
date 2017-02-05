@@ -151,6 +151,29 @@
       <version>5.1.0.Final</version>
     </dependency>
 
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate</artifactId>-->
+      <!--<version>3.2.1.ga</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate-annotations</artifactId>-->
+      <!--<version>3.2.0.ga</version>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate-validator</artifactId>-->
+      <!--<version>5.3.4.Final</version>-->
+    <!--</dependency>-->
+
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+
     <!-- jsr303 validation -->
     <dependency>
       <groupId>javax.validation</groupId>

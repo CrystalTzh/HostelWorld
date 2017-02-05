@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd
+">
+
+    <context:component-scan base-package="com.example"/>
+    <!-- 支持aop注解 -->
+    <aop:aspectj-autoproxy/>
+
+    <!--<bean id="remoteDS" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql://581c2d0f463e5.sh.cdb.myqcloud.com:6629/homework3_12306?characterEncoding=utf-8"/>-->
+        <!--<property name="username" value="cdb_outerroot"/>-->
+        <!--<property name="password" value="tty73238220"/>-->
+    <!--</bean>-->
+
+    <bean id ="hostelWorld" class= "org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <property name ="driverClassName" value= "com.mysql.jdbc.Driver"/>
+        <property name ="url" value= "jdbc:mysql://localhost:3306/hostelWorld?characterEncoding=utf-8" />
+        <property name ="username" value="root"/>
+        <property name ="password" value="123456"/>
+    </bean>
+
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+        <property name="dataSource" ref="hostelWorld"/>
+        <property name="hibernateProperties">
+            <props>
+                <!-- key的名字前面都要加hibernate. -->
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.MySQLDialect
+                </prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/hostelWorld</prop>
+                <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+            </props>
+
+        </property>
+        <property name ="packagesToScan" value= "com.example.pojo"/>
+
+        <property name="mappingLocations">
+            <list>
+
+            </list>
+        </property><!-- 如果有多个包有映射实体，都在value中写，用逗号隔开 -->
+        <!--<property name="mappingDirectoryLocations">-->
+        <!--<list>-->
+        <!--<value>classpath:/com/example/hibernate</value>-->
+        <!--</list>-->
+        <!--</property>-->
+    </bean>
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+
+    </bean>
+
+    <!--配置一个JdbcTemplate实例 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="hostelWorld"/>
+    </bean>
+
+    <!-- 配置事务管理 -->
+    <bean id="txManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <aop:config>
+        <aop:pointcut
+                expression="execution(public * com.example.dao..*.*(..)) || execution(public * com.example.service..*.*(..))"
+                id="businessService"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="businessService"/>
+
+    </aop:config>
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <!--<tx:method name="find*" read-only="true" propagation="NOT_SUPPORTED"/>-->
+            <!--<tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED"/>-->
+            <!-- get开头的方法不需要在事务中运行 。 有些情况是没有必要使用事务的，比如获取数据。开启事务本身对性能是有一定的影响的 -->
+            <tx:method name="*" propagation="REQUIRED"/>    <!-- 其他方法在实务中运行 -->
+        </tx:attributes>
+    </tx:advice>
+
+
+
+</beans>
