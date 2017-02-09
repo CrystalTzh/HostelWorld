@@ -1,13 +1,14 @@
 package com.example.pojo;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 顾客 用户
  * Created by Crystal on 2017/2/5.
  */
 @Entity(name = "customer")
-public class Customer {
+public class Customer implements Serializable{
     /**
      * id 主键
      */
