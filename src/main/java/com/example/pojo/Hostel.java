@@ -1,8 +1,6 @@
 package com.example.pojo;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -44,6 +42,7 @@ public class Hostel implements Serializable {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "hostelnumber")
     public String getHostelNumber() {
         return hostelNumber;

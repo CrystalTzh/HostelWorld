@@ -9,10 +9,23 @@ import java.io.Serializable;
  */
 @Entity(name = "room")
 public class Room implements Serializable{
+
     private long rid;
+    /**
+     * 客栈识别码
+     */
     private String hostelNumber;
+    /**
+     * 房间号
+     */
     private int roomNo;
+    /**
+     * 房间类型 1：一人间 2：双人间 3：三人间
+     */
     private int roomType;
+    /**
+     * 是否可用
+     */
     private boolean isAvailable;
 
     public Room() {

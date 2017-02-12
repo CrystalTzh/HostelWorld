@@ -49,6 +49,7 @@ public class VipCard implements Serializable{
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "vipNumber")
     public String getVipNumber() {
         return vipNumber;
